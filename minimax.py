@@ -10,6 +10,7 @@ from connect_four import diagonals_pos as diag_pos
 from connect_four import diagonals_neg as diag_neg
 from connect_four_eval import evaluate
 from copy import deepcopy
+import math
 
 search_depth = 10
 
@@ -35,11 +36,13 @@ def insert(board, column, color):
     c[i] = color
     return board
 
+
 def check_for_full_columns(column):
     if column[0] != NONE:
         return True
     else:
         return False
+
 
 def get_winner(board):
     """Get the winner on the current board."""
@@ -70,7 +73,7 @@ def minimax_decision(thisGame, player):
             return evaluate(node,player,cols,rows)
         
         if maximizingPlayer:
-            V = -99999
+            V = -math.inf
             for i in range(cols):
                 if check_for_full_columns(node[i]):
                     continue
@@ -82,7 +85,7 @@ def minimax_decision(thisGame, player):
                         V = tmpV
             return V
         else:
-            V = 99999
+            V = math.inf
             for i in range(cols):
                 if check_for_full_columns(node[i]):
                     continue

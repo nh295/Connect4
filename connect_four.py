@@ -1,7 +1,6 @@
 #! /usr/bin/env python3
 from itertools import groupby, chain
 import matplotlib.pyplot as plt
-from minimax import minimax_decision
 
 NONE = 0
 RED = 1
@@ -84,10 +83,10 @@ class Game:
         for y in range(self.rows):
             print('  '.join(str(self.board[x][y]) for x in range(self.cols)))
         print()
-        
 
 
 if __name__ == '__main__':
+    from minimax import minimax_decision
     g = Game()
     plt.ion()
     turn = RED
