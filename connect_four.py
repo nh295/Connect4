@@ -86,6 +86,7 @@ class Game:
 
 
 if __name__ == '__main__':
+    from connect_four_eval import evaluate
     from minimax import minimax_decision
     g = Game()
     plt.ion()
@@ -99,3 +100,24 @@ if __name__ == '__main__':
             row = input('{}\'s turn: '.format('Red' if turn == RED else 'Yellow'))
             g.insert(int(row), turn)
         turn = YELLOW if turn == RED else RED
+
+    # g.insert(3, 1)
+    # g.insert(3, 2)
+    # g.insert(2, 1)
+    # g.insert(2, 2)
+    # # g.insert(1, 1)
+    # # g.insert(1, 2)
+    # score = evaluate(g.board, 2, g.cols, g.rows)
+    # g.print_board()
+    # print(score)
+    #
+    # g = Game()
+    # g.insert(3, 1)
+    # g.insert(3, 2)
+    # g.insert(2, 1)
+    # g.insert(1, 2)
+    # # g.insert(1, 1)
+    # # g.insert(0, 2)
+    # score = evaluate(g.board, 2, g.cols, g.rows)
+    # g.print_board()
+    # print(score)

@@ -16,11 +16,6 @@ YELLOW = 2
 
 
 def evaluate(board, player, cols, rows):
-    
-    if player==RED:
-        opponent=YELLOW
-    else:
-        opponent=RED
 
     lines = (
         board,  # columns
@@ -42,14 +37,14 @@ def evaluate(board, player, cols, rows):
                     elif cluster.max_filled == 2:
                         cluster_score = 100
                     elif cluster.max_filled == 3:
-                        cluster_score = 300
+                        cluster_score = 1000
                     elif cluster.max_filled >= 4:
                         cluster_score = 10000
 
-                    if cluster.length + cluster.open_end + cluster.open_start < 4:
-                        cluster_score = 0
-                    else:
-                        cluster_score += 50*(cluster.open_end + cluster.open_start)
+                    # if cluster.length + cluster.open_end + cluster.open_start < 4:
+                    #     cluster_score = 0
+                    # else:
+                    cluster_score += 5 * (cluster.open_end + cluster.open_start)*(2 ** cluster.max_filled)
 
                     line_score += cluster_score
             else:
@@ -57,18 +52,18 @@ def evaluate(board, player, cols, rows):
                 line_score = 0
                 for cluster in cluster_list:
                     if cluster.max_filled == 1:
-                        cluster_score = -100
+                        cluster_score = -999
                     elif cluster.max_filled == 2:
-                        cluster_score = -2000
+                        cluster_score = -99999
                     elif cluster.max_filled == 3:
-                        cluster_score = -5000
+                        cluster_score = -9999999
                     elif cluster.max_filled >= 4:
-                        cluster_score = -999999
+                        cluster_score = -999999999
 
-                    if cluster.length + cluster.open_end + cluster.open_start < 4:
-                        cluster_score = 0
-                    else:
-                        cluster_score -= 50 * (cluster.open_end + cluster.open_start)
+                    # if cluster.length + cluster.open_end + cluster.open_start < 4:
+                    #     cluster_score = 0
+                    # else:
+                    cluster_score -= 100 * (cluster.open_end + cluster.open_start)* (10 ** cluster.max_filled)
                     line_score += cluster_score
 
             score += line_score

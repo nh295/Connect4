@@ -10,9 +10,8 @@ from connect_four import diagonals_pos as diag_pos
 from connect_four import diagonals_neg as diag_neg
 from connect_four_eval import evaluate
 from copy import deepcopy
-import math
 
-search_depth = 10
+search_depth = 0
 
 game = Game()
 rows = game.rows
@@ -63,50 +62,50 @@ def get_winner(board):
 
 def minimax_decision(thisGame, player):
 
-    if player==RED:
-        opponent=YELLOW
+    if player == RED:
+        opponent = YELLOW
     else:
-        opponent=RED
+        opponent = RED
     
     def minimax(node, depth, maximizingPlayer):
         if depth == 0 or get_winner(node) != NONE:
-            return evaluate(node,player,cols,rows)
+            return evaluate(node, player, cols, rows)
         
         if maximizingPlayer:
-            V = -math.inf
+            V = float('-infinity')
             for i in range(cols):
                 if check_for_full_columns(node[i]):
                     continue
                 else:
                     tmp_node = deepcopy(node)
-                    childNode = insert(tmp_node,i,opponent)
+                    childNode = insert(tmp_node, i, opponent)
                     tmpV = minimax(childNode, depth-1, False)
                     if tmpV > V:                       
                         V = tmpV
             return V
         else:
-            V = math.inf
+            V = float('+infinity')
             for i in range(cols):
                 if check_for_full_columns(node[i]):
                     continue
                 else:
                     tmp_node = deepcopy(node)
-                    childNode = insert(tmp_node,i,player)
+                    childNode = insert(tmp_node, i, player)
                     tmpV = minimax(childNode, depth-1, True)
                     if tmpV < V:                       
                         V = tmpV
             return V
     
     current_board = thisGame.board
-    V = -99999
+    V = float('-infinity')
     for i in range(cols):
         if check_for_full_columns(current_board[i]):
             continue
         else:
             board = deepcopy(current_board)
-            childNode = insert(board,i,opponent)
-            tmpV = minimax(childNode, search_depth-1, False)
-            if tmpV > V:                       
+            childNode = insert(board,i,player)
+            tmpV = minimax(childNode, search_depth-1, True)
+            if tmpV > V:
                 V = tmpV
                 nextMove = i
                 
