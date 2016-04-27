@@ -33,14 +33,15 @@ class Game:
         self.red_y = []
         self.yellow_x = []
         self.yellow_y = []
-        plt.cla()
-        # plt.close()
+        self.ax = None
 
     def insert(self, column, color):
         """Insert the color in the given column."""
+        if column < 0 or column > self.cols - 1:
+            raise ValueError('Invalid column')
         c = self.board[column]
         if c[0] != NONE:
-            raise Exception('Column is full')
+            raise ValueError('Column is full')
 
         i = -1
         while c[i] != NONE:
@@ -72,6 +73,8 @@ class Game:
 
     def print_board(self):
         """Print the board."""
+        if self.ax is None:
+            fig, self.ax = plt.subplots()
         for x in range(self.cols):
             for y in range(self.rows):
                 if self.board[x][y] == 1:
@@ -80,9 +83,13 @@ class Game:
                 elif self.board[x][y] == 2:
                     self.yellow_x.append(x)
                     self.yellow_y.append(self.rows - y - 1)
-        plt.scatter(self.red_x, self.red_y, 300, 'r')
-        plt.scatter(self.yellow_x, self.yellow_y, 300, 'y')
-        plt.axis([0, self.cols-1, -1, self.rows])
+        plt.scatter(self.red_x, self.red_y, 800, 'r')
+        plt.scatter(self.yellow_x, self.yellow_y, 800, 'y')
+        self.ax.set_xticks([0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5], minor=True)
+        self.ax.set_yticks([0.5, 1.5, 2.5, 3.5, 4.5, 5.5], minor=True)
+        self.ax.xaxis.grid(True, which='minor', linestyle='-')
+        self.ax.yaxis.grid(True, which='minor', linestyle='-')
+        plt.axis([-0.5, self.cols - 0.5, -0.5, self.rows - 0.5])
         plt.draw()
         print('  '.join(map(str, range(self.cols))))
         for y in range(self.rows):

@@ -26,8 +26,17 @@ def play(games, win, ai):
                 g.insert(next_move, turn)
             else:
                 g.print_board()
-                next_move = input('{}\'s turn: '.format('Red' if turn == RED else 'Yellow'))
-                g.insert(int(next_move), turn)
+                not_valid = True
+                while not_valid:
+                    try:
+                        next_move = input('{}\'s turn: '.format('Red' if turn == RED else 'Yellow'))
+                        g.insert(int(next_move), turn)
+                    except ValueError:
+                        not_valid = True
+                        print("Invalid move. Input valid move")
+                    else:
+                        not_valid = False
+
 
             # time.sleep(0.1)
             turns_played += 1
@@ -36,6 +45,7 @@ def play(games, win, ai):
 
         num_games += 1
         winner = g.get_winner()
+        last_winner = winner
         if winner == 1:
             player1_wins += 1
         elif winner == 2:
@@ -47,5 +57,5 @@ def play(games, win, ai):
 
 
 if __name__ == '__main__':
-    [wins, losses, ties] = play(3, 2, BoardEvaluation([-72.81, -15.77, 064.15, 011.97, 030.46, 013.75, 090.68, 017.08, -99.65, -14.23, -68.97, -15.85]))
+    [wins, losses, ties] = play(3, 2, BoardEvaluation([079.28 ,-81.69 ,-00.28 ,060.28 ,-18.91 ,005.27, -67.20 ,-94.29 ,075.05 ,091.10 ,-48.31 ,029.57]))
     print('Wins: {:d}, Losses: {:d}, Ties:{:d}'.format(wins, losses, ties))
