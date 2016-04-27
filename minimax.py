@@ -8,10 +8,10 @@ from itertools import groupby, chain
 from connect_four import Game
 from connect_four import diagonals_pos as diag_pos
 from connect_four import diagonals_neg as diag_neg
-from connect_four_eval import evaluate
 from copy import deepcopy
+import random
 
-search_depth = 0
+search_depth = 20
 
 game = Game()
 rows = game.rows
@@ -60,7 +60,7 @@ def get_winner(board):
 
 # Minimax Search
 
-def minimax_decision(thisGame, player):
+def minimax_decision(thisGame, player, board_eval):
 
     if player == RED:
         opponent = YELLOW
@@ -69,7 +69,7 @@ def minimax_decision(thisGame, player):
     
     def minimax(node, depth, maximizingPlayer):
         if depth == 0 or get_winner(node) != NONE:
-            return evaluate(node, player, cols, rows)
+            return board_eval.evaluate(node, player, cols, rows)
         
         if maximizingPlayer:
             V = float('-infinity')
@@ -98,6 +98,7 @@ def minimax_decision(thisGame, player):
     
     current_board = thisGame.board
     V = float('-infinity')
+    next_move = list()
     for i in range(cols):
         if check_for_full_columns(current_board[i]):
             continue
@@ -107,9 +108,12 @@ def minimax_decision(thisGame, player):
             tmpV = minimax(childNode, search_depth-1, True)
             if tmpV > V:
                 V = tmpV
-                nextMove = i
-                
-    return nextMove
+                next_move = list()
+                next_move.append(i)
+            elif tmpV == V:
+                next_move.append(i)
+
+    return next_move[random.randint(0,len(next_move)-1)] # takes a random move of the highest utility
         
 
 

@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 from itertools import groupby, chain
 import matplotlib.pyplot as plt
+import time
 
 NONE = 0
 RED = 1
@@ -20,12 +21,20 @@ def diagonals_neg(matrix, cols, rows):
 
 
 class Game:
+    plt.ion()
+
     def __init__(self, cols=7, rows=6, required_to_win=4):
         """Create a new game."""
         self.cols = cols
         self.rows = rows
         self.win = required_to_win
         self.board = [[NONE] * rows for _ in range(cols)]
+        self.red_x = []
+        self.red_y = []
+        self.yellow_x = []
+        self.yellow_y = []
+        plt.cla()
+        # plt.close()
 
     def insert(self, column, color):
         """Insert the color in the given column."""
@@ -44,8 +53,8 @@ class Game:
         """Check the current board for a winner."""
         w = self.get_winner()
         if w:
-            self.print_board()
-            raise Exception(w + ' won!')
+            # self.print_board()
+            return w
 
     def get_winner(self):
         """Get the winner on the current board."""
@@ -63,61 +72,19 @@ class Game:
 
     def print_board(self):
         """Print the board."""
-        red_x = []
-        red_y = []
-        yellow_x = []
-        yellow_y = []
         for x in range(self.cols):
             for y in range(self.rows):
                 if self.board[x][y] == 1:
-                    red_x.append(x)
-                    red_y.append(self.rows - y - 1)
+                    self.red_x.append(x)
+                    self.red_y.append(self.rows - y - 1)
                 elif self.board[x][y] == 2:
-                    yellow_x.append(x)
-                    yellow_y.append(self.rows - y - 1)
-        plt.scatter(red_x, red_y, 300, 'r')
-        plt.scatter(yellow_x, yellow_y, 300, 'y')
+                    self.yellow_x.append(x)
+                    self.yellow_y.append(self.rows - y - 1)
+        plt.scatter(self.red_x, self.red_y, 300, 'r')
+        plt.scatter(self.yellow_x, self.yellow_y, 300, 'y')
         plt.axis([0, self.cols-1, -1, self.rows])
         plt.draw()
         print('  '.join(map(str, range(self.cols))))
         for y in range(self.rows):
             print('  '.join(str(self.board[x][y]) for x in range(self.cols)))
         print()
-
-
-if __name__ == '__main__':
-    from connect_four_eval import evaluate
-    from minimax import minimax_decision
-    g = Game()
-    plt.ion()
-    turn = RED
-    while True:
-        if turn == YELLOW:
-            next_move = minimax_decision(g,YELLOW)
-            g.insert(next_move, turn)
-        else:
-            g.print_board()
-            row = input('{}\'s turn: '.format('Red' if turn == RED else 'Yellow'))
-            g.insert(int(row), turn)
-        turn = YELLOW if turn == RED else RED
-
-    # g.insert(3, 1)
-    # g.insert(3, 2)
-    # g.insert(2, 1)
-    # g.insert(2, 2)
-    # # g.insert(1, 1)
-    # # g.insert(1, 2)
-    # score = evaluate(g.board, 2, g.cols, g.rows)
-    # g.print_board()
-    # print(score)
-    #
-    # g = Game()
-    # g.insert(3, 1)
-    # g.insert(3, 2)
-    # g.insert(2, 1)
-    # g.insert(1, 2)
-    # # g.insert(1, 1)
-    # # g.insert(0, 2)
-    # score = evaluate(g.board, 2, g.cols, g.rows)
-    # g.print_board()
-    # print(score)
