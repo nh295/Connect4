@@ -57,5 +57,5 @@ def play(games, win, ai):
 
 
 if __name__ == '__main__':
-    [wins, losses, ties] = play(3, 2, BoardEvaluation([079.28 ,-81.69 ,-00.28 ,060.28 ,-18.91 ,005.27, -67.20 ,-94.29 ,075.05 ,091.10 ,-48.31 ,029.57]))
+    [wins, losses, ties] = play(3, 2, BoardEvaluation([000.00, 060.64, 024.02, 025.47, 032.41, 021.16, 057.68, 094.85, 097.16, 091.36, 051.07, 032.81]))
     print('Wins: {:d}, Losses: {:d}, Ties:{:d}'.format(wins, losses, ties))

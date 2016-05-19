@@ -76,26 +76,23 @@ if __name__ == '__main__':
     num_rounds = 2
 
     # initialize the players
-    for i in range(num_players-1):
-        my_cluster1 = random.randrange(100)
-        my_cluster2 = random.randrange(100)
-        my_cluster3 = random.randrange(100)
-        my_cluster4 = random.randrange(100)
-        my_free_space_mult = random.randrange(10)
-        my_free_space_exp = random.randrange(10)
-        your_cluster1 = -random.randrange(100)
-        your_cluster2 = -random.randrange(100)
-        your_cluster3 = -random.randrange(100)
-        your_cluster4 = -random.randrange(100)
-        your_free_space_mult = -random.randrange(10)
-        your_free_space_exp = random.randrange(10)
+    for i in range(num_players):
+        my_cluster1 = random.random()*100
+        my_cluster2 = random.random()*100
+        my_cluster3 = random.random()*100
+        my_cluster4 = random.random()*100
+        my_free_space_mult = random.random()*10
+        my_free_space_exp = random.random()*10
+        your_cluster1 = random.random()*100
+        your_cluster2 = random.random()*100
+        your_cluster3 = random.random()*100
+        your_cluster4 = random.random()*100
+        your_free_space_mult = random.random()*10
+        your_free_space_exp = random.random()*10
         players.append(
             BoardEvaluation([my_cluster1, my_cluster2, my_cluster3, my_cluster4, my_free_space_mult, my_free_space_exp,
                             your_cluster1, your_cluster2, your_cluster3, your_cluster4, your_free_space_mult,
                             your_free_space_exp]))
-    players.append(
-        BoardEvaluation([1e-7, 1e-6, 1e-5, 1e-4, 5e-8, 2e-8,
-                         -1e-6, -1e-4, -1e-2, -1, -1e-6, 10e-8]))
 
     for i in range(num_generation):
         winners = tournament(players, num_rounds, 11, 6)
@@ -108,8 +105,8 @@ if __name__ == '__main__':
         for k in range(num_rounds):
             random.shuffle(winners)
             for j in range(0, len(winners) - 1, 2):
-                [child1, child2] = sbx(winners[j].eval_vector, winners[j+1].eval_vector, 20, -100, 100)
-                mutated_child1 = pm(child1, 20, -100, 100, 1/len(child1))
-                mutated_child2 = pm(child2, 20, -100, 100, 1 / len(child2))
+                [child1, child2] = sbx(winners[j].eval_vector, winners[j+1].eval_vector, 20, 0, 100)
+                mutated_child1 = pm(child1, 20, 0, 100, 1/len(child1))
+                mutated_child2 = pm(child2, 20, 0, 100, 1 / len(child2))
                 players.append(BoardEvaluation(mutated_child1))
                 players.append(BoardEvaluation(mutated_child2))

@@ -33,7 +33,7 @@ class BoardEvaluation:
         self.eval_vector = params
 
     def __str__(self):
-        return '{:06.2f}  {:06.2f}  {:06.2f}  {:06.2f}  {:06.2f}  {:06.2f} {:06.2f}  {:06.2f}  {:06.2f}  {:06.2f}  {:06.2f}  {:06.2f}'.format(
+        return '{:06.2f}, {:06.2f}, {:06.2f}, {:06.2f}, {:06.2f}, {:06.2f}, {:06.2f}, {:06.2f}, {:06.2f}, {:06.2f}, {:06.2f}, {:06.2f}'.format(
             self.my_cluster1, self.my_cluster2, self.my_cluster3, self.my_cluster4, self.my_free_space_mult, self.my_free_space_exp,
             self.your_cluster1, self.your_cluster2, self.your_cluster3, self.your_cluster4, self.your_free_space_mult, self.your_free_space_exp)
 
@@ -53,6 +53,7 @@ class BoardEvaluation:
                     cluster_list = self.find_clusters(line, color)
                     line_score = 0
                     for cluster in cluster_list:
+                        # if cluster.open_end + cluster.open_start + cluster.max_filled >= 4:
                         if cluster.max_filled == 1:
                             cluster_score = self.my_cluster1
                         elif cluster.max_filled == 2:
@@ -62,13 +63,14 @@ class BoardEvaluation:
                         elif cluster.max_filled >= 4:
                             cluster_score = self.my_cluster4
 
-                        cluster_score += self.my_free_space_mult * (cluster.open_end + cluster.open_start)*(self.my_free_space_exp ** cluster.max_filled)
+                        cluster_score = self.my_free_space_mult * (cluster.open_end + cluster.open_start)*(self.my_free_space_exp ** cluster_score)
 
                         line_score += cluster_score
                 else:
                     cluster_list = self.find_clusters(line, color)
                     line_score = 0
                     for cluster in cluster_list:
+                        # if cluster.open_end + cluster.open_start + cluster.max_filled >= 4:
                         if cluster.max_filled == 1:
                             cluster_score = self.your_cluster1
                         elif cluster.max_filled == 2:
@@ -78,8 +80,8 @@ class BoardEvaluation:
                         elif cluster.max_filled >= 4:
                             cluster_score = self.your_cluster4
 
-                        cluster_score += self.your_free_space_mult * (cluster.open_end + cluster.open_start)* (self.your_free_space_exp ** cluster.max_filled)
-                        line_score += cluster_score
+                        cluster_score = self.your_free_space_mult * (cluster.open_end + cluster.open_start)* (self.your_free_space_exp ** cluster_score)
+                        line_score -= cluster_score
 
                 score += line_score
 
